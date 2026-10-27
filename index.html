@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#0b0b18">
+  <meta name="description" content="StudyHub helps you plan tasks, track coding practice, save notes and grow consistently.">
+  <title>StudyHub — Student Productivity</title>
+  <link rel="stylesheet" href="css/style.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar">
+      <a class="brand" href="#" aria-label="StudyHub home">
+        <span class="brand-mark">S</span><span>Study<span class="accent">Hub</span></span>
+      </a>
+      <div class="side-label">WORKSPACE</div>
+      <nav class="nav-list" aria-label="Main navigation">
+        <button class="nav-item active" data-view="dashboard"><span>◈</span> Dashboard</button>
+        <button class="nav-item" data-view="tasks"><span>✓</span> Task Manager <span class="nav-count" id="taskNavCount">0</span></button>
+        <button class="nav-item" data-view="coding"><span>⌘</span> Coding Tracker</button>
+        <button class="nav-item" data-view="notes"><span>▤</span> Study Notes</button>
+        <button class="nav-item" data-view="analytics"><span>▥</span> Analytics</button>
+      </nav>
+      <div class="sidebar-bottom">
+        <div class="mini-card">
+          <div class="mini-icon">✦</div>
+          <div><strong>Keep going!</strong><p>Small steps make big progress.</p></div>
+        </div>
+        <div class="profile">
+          <div class="avatar">J</div><div><strong>Student</strong><span>Learning mode</span></div>
+        </div>
+      </div>
+    </aside>
+
+    <main class="main-content">
+      <header class="topbar">
+        <div class="mobile-brand"><span class="brand-mark">S</span> Study<span class="accent">Hub</span></div>
+        <div class="breadcrumb">Workspace <span>/</span> <strong id="currentSection">Dashboard</strong></div>
+        <div class="top-actions"><span class="today-label" id="todayLabel"></span><button class="icon-button theme-toggle" id="themeHint" title="Toggle light and dark theme" aria-label="Toggle theme">☼</button></div>
+      </header>
+
+      <section class="view active" id="view-dashboard">
+        <div class="welcome-row">
+          <div><p class="eyebrow">YOUR PERSONAL LEARNING SPACE</p><h1>Make today <span class="gradient-text">count.</span></h1><p class="subheading">A little progress every day adds up to big results.</p></div>
+          <button class="primary-button" data-go="tasks">＋ Add a task</button>
+        </div>
+        <div class="stats-grid">
+          <article class="stat-card"><div class="stat-top"><span>Tasks completed</span><span class="stat-icon purple">✓</span></div><div class="stat-number" id="statCompleted">0</div><div class="stat-foot"><span id="taskRate">0%</span> of all tasks</div><div class="progress-track"><div class="progress-fill purple-fill" id="taskProgressBar"></div></div></article>
+          <article class="stat-card"><div class="stat-top"><span>Coding problems</span><span class="stat-icon blue">⌘</span></div><div class="stat-number" id="statProblems">0</div><div class="stat-foot">Problems you've solved</div><div class="stat-foot accent-text" id="codingTopics">Start your first problem</div></article>
+          <article class="stat-card"><div class="stat-top"><span>Study notes</span><span class="stat-icon pink">▤</span></div><div class="stat-number" id="statNotes">0</div><div class="stat-foot">Ideas saved for later</div><div class="stat-foot accent-text">Keep learning, keep writing</div></article>
+          <article class="stat-card"><div class="stat-top"><span>Study streak</span><span class="stat-icon orange">✦</span></div><div class="stat-number"><span id="statStreak">0</span><small> days</small></div><div class="stat-foot">Days with activity in a row</div><div class="stat-foot accent-text">Your consistency matters</div></article>
+        </div>
+        <div class="dashboard-grid">
+          <article class="panel task-panel"><div class="panel-heading"><div><h2>Today's focus</h2><p>Your next steps, all in one place.</p></div><button class="text-button" data-go="tasks">View all →</button></div><div id="dashboardTasks" class="dashboard-task-list"></div></article>
+          <article class="panel activity-panel"><div class="panel-heading"><div><h2>Learning activity</h2><p>Your recent productivity</p></div><span class="live-pill"><i></i> LIVE</span></div><div class="chart-wrap"><canvas id="dashboardChart" aria-label="Weekly learning activity chart"></canvas></div><div class="chart-legend"><span><i class="legend-dot purple-dot"></i> Tasks completed</span><span><i class="legend-dot blue-dot"></i> Coding solved</span></div></article>
+        </div>
+        <article class="panel focus-panel"><div class="focus-copy"><p class="eyebrow">FOCUS MODE</p><h2>One focused session can change your day.</h2><p>Take a small step. Stay consistent.</p></div><div class="focus-controls"><div class="focus-time" id="focusTime">25:00</div><div class="focus-buttons"><button class="primary-button" id="focusStart">▶ Start focus</button><button class="secondary-button" id="focusReset">↺ Reset</button></div><span class="muted" id="focusStatus">25-minute focus session</span></div></article>
+        <article class="panel quick-panel"><div class="panel-heading"><div><h2>Quick access</h2><p>Jump back into your learning flow.</p></div></div><div class="quick-grid"><button class="quick-card" data-go="coding"><span class="quick-symbol blue">⌘</span><strong>Log coding problem</strong><small>Record a new solution</small><span class="quick-arrow">↗</span></button><button class="quick-card" data-go="notes"><span class="quick-symbol pink">▤</span><strong>Create study note</strong><small>Capture an important idea</small><span class="quick-arrow">↗</span></button><button class="quick-card" data-go="analytics"><span class="quick-symbol purple">▥</span><strong>View your progress</strong><small>See how far you've come</small><span class="quick-arrow">↗</span></button></div></article>
+      </section>
+
+      <section class="view" id="view-tasks">
+        <div class="page-heading"><div><p class="eyebrow">PLAN YOUR DAY</p><h1>Task Manager</h1><p class="subheading">Turn your goals into manageable steps.</p></div><button class="primary-button" id="openTaskForm">＋ New task</button></div>
+        <article class="panel form-panel hidden" id="taskFormPanel"><div class="panel-heading"><h2 id="taskFormTitle">Create a task</h2><button class="close-button" id="closeTaskForm" aria-label="Close">×</button></div><form id="taskForm"><input type="hidden" id="taskId"><div class="form-grid"><label>Task title<input id="taskTitle" required maxlength="100" placeholder="e.g. Practice Java arrays"></label><label>Due date<input id="taskDue" type="date"></label><label>Priority<select id="taskPriority"><option value="medium">Medium</option><option value="high">High</option><option value="low">Low</option></select></label><label>Category<select id="taskCategory"><option>Study</option><option>Coding</option><option>College</option><option>Personal</option></select></label></div><div class="form-actions"><button type="button" class="secondary-button" id="cancelTask">Cancel</button><button class="primary-button" type="submit">Save task</button></div></form></article>
+        <div class="filter-row"><div class="filter-tabs" id="taskFilters"><button class="filter-tab active" data-filter="all">All tasks</button><button class="filter-tab" data-filter="active">In progress</button><button class="filter-tab" data-filter="completed">Completed</button></div><span class="muted" id="taskSummary">0 tasks</span></div>
+        <div id="taskList" class="task-list"></div>
+      </section>
+
+      <section class="view" id="view-coding">
+        <div class="page-heading"><div><p class="eyebrow">ONE PROBLEM AT A TIME</p><h1>Coding Tracker</h1><p class="subheading">Celebrate every problem you solve.</p></div><button class="primary-button" id="openCodingForm">＋ Log problem</button></div>
+        <article class="panel form-panel hidden" id="codingFormPanel"><div class="panel-heading"><h2 id="codingFormTitle">Log a coding problem</h2><button class="close-button" id="closeCodingForm" aria-label="Close">×</button></div><form id="codingForm"><input type="hidden" id="problemId"><div class="form-grid"><label>Problem name<input id="problemName" required maxlength="100" placeholder="e.g. Binary Search"></label><label>Language<select id="problemLanguage"><option>Java</option><option>JavaScript</option><option>Python</option><option>C++</option><option>C</option></select></label><label>Topic<select id="problemTopic"><option>Arrays</option><option>Strings</option><option>Searching</option><option>Sorting</option><option>Linked Lists</option><option>Trees</option><option>Graphs</option><option>Dynamic Programming</option><option>Other</option></select></label><label>Difficulty<select id="problemDifficulty"><option>Easy</option><option>Medium</option><option>Hard</option></select></label><label class="full-field">Practice link (optional)<input id="problemLink" type="url" placeholder="https://..."></label></div><div class="form-actions"><button type="button" class="secondary-button" id="cancelCoding">Cancel</button><button class="primary-button" type="submit">Save problem</button></div></form></article>
+        <div class="stats-grid compact-stats"><article class="stat-card"><div class="stat-top"><span>Total solved</span><span class="stat-icon blue">⌘</span></div><div class="stat-number" id="codingTotal">0</div><div class="stat-foot">Logged solutions</div></article><article class="stat-card"><div class="stat-top"><span>Easy</span><span class="stat-icon green">✓</span></div><div class="stat-number" id="codingEasy">0</div><div class="stat-foot">Easy problems</div></article><article class="stat-card"><div class="stat-top"><span>Medium</span><span class="stat-icon orange">◆</span></div><div class="stat-number" id="codingMedium">0</div><div class="stat-foot">Medium problems</div></article><article class="stat-card"><div class="stat-top"><span>Hard</span><span class="stat-icon pink">▲</span></div><div class="stat-number" id="codingHard">0</div><div class="stat-foot">Hard problems</div></article></div>
+        <article class="panel"><div class="panel-heading coding-toolbar"><div><h2>Problem history</h2><p>Your logged coding practice.</p></div><div class="search-filter-group"><input class="search-input" id="codingSearch" placeholder="Search problems..." aria-label="Search coding problems"><select class="search-input compact-select" id="codingDifficultyFilter" aria-label="Filter by difficulty"><option value="all">All levels</option><option>Easy</option><option>Medium</option><option>Hard</option></select><select class="search-input compact-select" id="codingLanguageFilter" aria-label="Filter by language"><option value="all">All languages</option><option>Java</option><option>JavaScript</option><option>Python</option><option>C++</option><option>C</option></select></div></div><div id="codingList" class="coding-list"></div></article>
+      </section>
+
+      <section class="view" id="view-notes">
+        <div class="page-heading"><div><p class="eyebrow">SAVE WHAT YOU LEARN</p><h1>Study Notes</h1><p class="subheading">Your personal library of useful ideas.</p></div><button class="primary-button" id="openNoteForm">＋ New note</button></div>
+        <article class="panel form-panel hidden" id="noteFormPanel"><div class="panel-heading"><h2 id="noteFormTitle">Create a study note</h2><button class="close-button" id="closeNoteForm" aria-label="Close">×</button></div><form id="noteForm"><input type="hidden" id="noteId"><div class="form-grid"><label>Note title<input id="noteTitle" required maxlength="100" placeholder="e.g. Java loops"></label><label>Subject<input id="noteSubject" maxlength="50" placeholder="e.g. Java Programming"></label><label class="full-field">Note content<textarea id="noteContent" required rows="6" maxlength="10000" placeholder="Write the important points here..."></textarea></label></div><div class="form-actions"><button type="button" class="secondary-button" id="cancelNote">Cancel</button><button class="primary-button" type="submit">Save note</button></div></form></article>
+        <div class="notes-toolbar"><input class="search-input" id="noteSearch" placeholder="Search notes..." aria-label="Search notes"><span class="muted" id="noteSummary">0 notes</span></div><div id="notesGrid" class="notes-grid"></div>
+      </section>
+
+      <section class="view" id="view-analytics">
+        <div class="page-heading"><div><p class="eyebrow">YOUR GROWTH, VISUALIZED</p><h1>Progress Analytics</h1><p class="subheading">Every completed task is a step forward.</p></div><button class="secondary-button" id="exportData">↓ Export data</button></div>
+        <div class="stats-grid"><article class="stat-card"><div class="stat-top"><span>Task completion</span><span class="stat-icon purple">✓</span></div><div class="stat-number" id="analyticsTaskRate">0%</div><div class="stat-foot">Completed tasks / all tasks</div></article><article class="stat-card"><div class="stat-top"><span>Problems solved</span><span class="stat-icon blue">⌘</span></div><div class="stat-number" id="analyticsProblems">0</div><div class="stat-foot">Across all topics</div></article><article class="stat-card"><div class="stat-top"><span>Notes created</span><span class="stat-icon pink">▤</span></div><div class="stat-number" id="analyticsNotes">0</div><div class="stat-foot">Your learning library</div></article><article class="stat-card"><div class="stat-top"><span>Current streak</span><span class="stat-icon orange">✦</span></div><div class="stat-number"><span id="analyticsStreak">0</span><small> days</small></div><div class="stat-foot">Consecutive active days</div></article></div>
+        <div class="analytics-grid"><article class="panel"><div class="panel-heading"><div><h2>Weekly activity</h2><p>Activity recorded over the last 7 days</p></div></div><div class="large-chart"><canvas id="analyticsChart" aria-label="Weekly activity analytics chart"></canvas></div></article><article class="panel"><div class="panel-heading"><div><h2>Coding by difficulty</h2><p>Your solved problem mix</p></div></div><div class="large-chart"><canvas id="difficultyChart" aria-label="Coding difficulty doughnut chart"></canvas></div><div id="difficultyLegend" class="difficulty-legend"></div></article></div>
+        <article class="panel"><div class="panel-heading"><div><h2>Topic breakdown</h2><p>Which topics have you practiced?</p></div></div><div id="topicBreakdown" class="topic-breakdown"></div></article>
+        <p class="privacy-note">Your data is stored locally in this browser. Export a backup regularly if you want to keep a copy.</p>
+      </section>
+      <footer class="footer">Made for focused learning <span>✦</span> StudyHub <span class="footer-note">Your data stays in this browser.</span></footer>
+    </main>
+  </div>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <script src="js/app.js"></script>
+</body>
+</html>
